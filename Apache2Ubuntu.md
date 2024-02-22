@@ -1,6 +1,6 @@
 ## **Config Location:**  
-> :~$ ls /etc/apache2/
-apache2.conf  conf-available  conf-enabled  envvars  magic  mods-available  mods-enabled  ports.conf  sites-available  sites-enabled  
+> :~$ ls /etc/apache2/  
+> apache2.conf  conf-available  conf-enabled  envvars  magic  mods-available  mods-enabled  ports.conf  sites-available  sites-enabled  
 
 **Use above config to change port to 8085.** 
 
@@ -9,46 +9,46 @@ apache2.conf  conf-available  conf-enabled  envvars  magic  mods-available  mods
   
 ## **Get status of apache2 process running:**  
 **Main PID: 8420 (apache2): shows pid for apache process**  
-> :~$ sudo netstat -tulpn | grep 8085
-tcp6       0      0 :::8085                 :::*                    LISTEN      8420/apache2  
+> :~$ sudo netstat -tulpn | grep 8085       
+> tcp6       0      0 :::8085                 :::*                    LISTEN      8420/apache2  
 
-> :~$ sudo systemctl status apache2
-● apache2.service - The Apache HTTP Server
-     Loaded: loaded (/lib/systemd/system/apache2.service; enabled; vendor preset: enabled)
-     Active: active (running) since Fri 2024-02-16 21:40:18 IST; 45s ago
-       Docs: https://httpd.apache.org/docs/2.4/
-    Process: 8416 ExecStart=/usr/sbin/apachectl start (code=exited, status=0/SUCCESS)
-   Main PID: 8420 (apache2)
-      Tasks: 55 (limit: 11905)
-     Memory: 5.1M
-        CPU: 57ms
-     CGroup: /system.slice/apache2.service
-             ├─8420 /usr/sbin/apache2 -k start
-             ├─8421 /usr/sbin/apache2 -k start
-             └─8422 /usr/sbin/apache2 -k start
-> Feb 16 21:40:18 abhishek-docker systemd[1]: Starting The Apache HTTP Server...
-> Feb 16 21:40:18 abhishek-docker apachectl[8419]: AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1. Set the 'ServerName' dire>
+> :~$ sudo systemctl status apache2  
+> ● apache2.service - The Apache HTTP Server  
+>     Loaded: loaded (/lib/systemd/system/apache2.service; enabled; vendor preset: enabled)  
+>     Active: active (running) since Fri 2024-02-16 21:40:18 IST; 45s ago  
+>     Docs: https://httpd.apache.org/docs/2.4/  
+>     Process: 8416 ExecStart=/usr/sbin/apachectl start (code=exited, status=0/SUCCESS)  
+>     Main PID: 8420 (apache2)  
+>     Tasks: 55 (limit: 11905)  
+>     Memory: 5.1M  
+>     CPU: 57ms  
+>     CGroup: /system.slice/apache2.service  
+>             ├─8420 /usr/sbin/apache2 -k start  
+>             ├─8421 /usr/sbin/apache2 -k start  
+>             └─8422 /usr/sbin/apache2 -k start  
+> Feb 16 21:40:18 abhishek-docker systemd[1]: Starting The Apache HTTP Server...  
+> Feb 16 21:40:18 abhishek-docker apachectl[8419]: AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1. Set the 'ServerName' dire>  
 > Feb 16 21:40:18 abhishek-docker systemd[1]: Started The Apache HTTP Server.  
 
 
 **Check whether 8085 is used by apache process as provided in config:**
-> abhishek@abhishek-docker:~$ sudo netstat -tulpn | grep 8085
+> abhishek@abhishek-docker:~$ sudo netstat -tulpn | grep 8085  
 tcp6       0      0 :::8085                 :::*                    LISTEN      8420/apache2  
 
-## How to Resolve ServerName Directory Issue Below :
+## How to Resolve ServerName Directory Issue Below:  
 > Feb 16 21:48:49 abhishek-docker apachectl[8757]: AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1. Set the 'ServerName' dire>  
 
 **Added below entry in apache2.conf as need to provide domain name:**  
 > ServerName localhost
 
 ## Apache2 Log Locations:
-> abhishek@abhishek-docker:~$ ls /var/log/apache2/
+> abhishek@abhishek-docker:~$ ls /var/log/apache2/  
 access.log  error.log  other_vhosts_access.log
 
-## Backing Up Access Log by Timestamp using 'tar' Command:
+## Backing Up Access Log by Timestamp using 'tar' Command:  
 > sudo tar -czvf "access_$(date +'%Y%m%d%H%M%S').tar.gz" access.log
 
-## Clearing Access Log: 
+## Clearing Access Log:  
 Check file size of access file:  
 > du -h access.log  
 
@@ -60,7 +60,7 @@ Check file size of access file:
 
 ## Enabling Processing Time in Access File:
 **Make below changes in apache2.conf:**  
-> LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\" %D" combined
+> LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\" %D" combined  
 > CustomLog ${APACHE_LOG_DIR}/access.log combined  
 
 **Comment out other combined settings.**
