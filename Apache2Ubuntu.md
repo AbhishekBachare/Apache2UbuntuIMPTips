@@ -26,23 +26,23 @@
 >             ├─8420 /usr/sbin/apache2 -k start  
 >             ├─8421 /usr/sbin/apache2 -k start  
 >             └─8422 /usr/sbin/apache2 -k start  
-> Feb 16 21:40:18 abhishek-docker systemd[1]: Starting The Apache HTTP Server...  
-> Feb 16 21:40:18 abhishek-docker apachectl[8419]: AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1. Set the 'ServerName' dire>  
-> Feb 16 21:40:18 abhishek-docker systemd[1]: Started The Apache HTTP Server.  
+> Feb 16 21:40:18 machine-name systemd[1]: Starting The Apache HTTP Server...  
+> Feb 16 21:40:18 machine-name apachectl[8419]: AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1. Set the 'ServerName' dire>  
+> Feb 16 21:40:18 machine-name systemd[1]: Started The Apache HTTP Server.  
 
 
 **Check whether 8085 is used by apache process as provided in config:**
-> abhishek@abhishek-docker:~$ sudo netstat -tulpn | grep 8085  
-tcp6       0      0 :::8085                 :::*                    LISTEN      8420/apache2  
+> :~$ sudo netstat -tulpn | grep 8085  
+> tcp6       0      0 :::8085                 :::*                    LISTEN      8420/apache2  
 
 ## How to Resolve ServerName Directory Issue Below:  
-> Feb 16 21:48:49 abhishek-docker apachectl[8757]: AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1. Set the 'ServerName' dire>  
+> Feb 16 21:48:49 machine-name apachectl[8757]: AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1. Set the 'ServerName' dire>  
 
 **Added below entry in apache2.conf as need to provide domain name:**  
 > ServerName localhost
 
 ## Apache2 Log Locations:
-> abhishek@abhishek-docker:~$ ls /var/log/apache2/  
+> :~$ ls /var/log/apache2/  
 access.log  error.log  other_vhosts_access.log
 
 ## Backing Up Access Log by Timestamp using 'tar' Command:  
